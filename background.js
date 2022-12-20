@@ -23,6 +23,11 @@ const createTab = async (params) => {
   }
 };
 
+const getActiveTab = async () => {
+  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+  return tabs?.[0];
+};
+
 /**
  * When multiple tabs are created, ensure they're offset and placed after one another.
  * Whenever the user switches tabs, tracking is reset.
@@ -31,6 +36,7 @@ let createdTabCount = 0;
 
 chrome.tabs.onActivated.addListener(async () => {
   createdTabCount = 0;
+  console.log("reset tab count");
 });
 
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
@@ -38,14 +44,19 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     return;
   }
 
-  const activeTabId = sender.tab?.id;
-  const index = sender.tab?.index;
+  // const senderTabId = sender.tab?.id;
+  const activeTab = await getActiveTab();
+  const activeTabIndex = activeTab?.index;
+  const index =
+    typeof activeTabIndex === "undefined"
+      ? undefined
+      : activeTabIndex + 1 + createdTabCount;
   const newTab = await createTab({
     url: request.href,
     active: false,
-    openerTabId: activeTabId,
-    index: index && index + 1 + createdTabCount,
+    openerTabId: activeTab?.id,
+    index: index,
   });
   createdTabCount = createdTabCount + 1;
-  console.log(newTab);
+  // console.log(newTab);
 });
