@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Chrome Right Click",
   "description": "Description",
-  "version": "0.1",
+  "version": "1.0",
   "background": {
     "service_worker": "background.js"
   },

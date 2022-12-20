@@ -1,6 +1,6 @@
 {
   "name": "chrome-right-click",
-  "version": "0.1",
+  "version": "1.0",
   "main": "index.js",
   "repository": "git@github.com:Etheryte/chrome-right-click.git",
   "author": "Etheryte <karl.tarvas@gmail.com>",
