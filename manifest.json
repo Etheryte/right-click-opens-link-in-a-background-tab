@@ -13,5 +13,8 @@
       "match_about_blank": true,
       "run_at": "document_end"
     }
-  ]
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  }
 }
