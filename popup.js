@@ -3,7 +3,7 @@
 const PLACEHOLDER = "<YOUR PAGE URL HERE>";
 
 // Source: ~/Repositories/right-click-opens-link-in-a-new-background-tab-public/.github/ISSUE_TEMPLATE/broken-link.md
-const ISSUE_TEMPLATE = `**What's the URL of the page?**
+const ISSUE_TEMPLATE = `**What's the URL of the page with the broken link?**
 
 URL of the page: ${PLACEHOLDER}
 
