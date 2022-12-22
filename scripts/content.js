@@ -19,6 +19,14 @@
     event.metaKey ||
     event.button !== targetButton;
 
+  const isInvalid = (href) => {
+    if (!href) {
+      return true;
+    }
+    // If we're dealing with a Js-bound link or similar, do nothing
+    return href.startsWith("javascript:") || href === "#";
+  };
+
   const cleanup = () => {
     originalEvent = undefined;
   };
@@ -28,10 +36,16 @@
       cleanup();
       return;
     }
+    const href = event.currentTarget.href;
+    if (isInvalid(href)) {
+      cleanup();
+      return;
+    }
+
     originalEvent = {
       screenX: event.screenX,
       screenY: event.screenY,
-      currentTarget: event.currentTarget,
+      href: href,
     };
   };
 
@@ -60,15 +74,10 @@
       return;
     }
 
-    if (originalEvent.currentTarget.href) {
-      event.preventDefault();
-      chrome.runtime.sendMessage({ href: originalEvent.currentTarget.href });
-      cleanup();
-      return false;
-    }
-
+    event.preventDefault();
+    chrome.runtime.sendMessage({ href: originalEvent.href });
     cleanup();
-    return;
+    return false;
   };
 
   document.body.addEventListener("mouseup", onBodyMouseUp);
