@@ -14,6 +14,7 @@
       "run_at": "document_end"
     }
   ],
+  "permissions": ["tabs"],
   "action": {
     "default_popup": "popup.html"
   }
