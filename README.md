@@ -1,1 +1,1 @@
-# chrome-right-click
+# Right Click Opens Link in a New Background Tab: Private repository
