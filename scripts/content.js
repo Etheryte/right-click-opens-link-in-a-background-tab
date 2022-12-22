@@ -81,9 +81,28 @@
   };
 
   document.body.addEventListener("mouseup", onBodyMouseUp);
-  Array.from(document.querySelectorAll("a")).forEach((element) => {
+  document.querySelectorAll("a").forEach((element) => {
     addEventListener(element, "mousedown", onLinkMouseDown);
     addEventListener(element, "contextmenu", onLinkContextMenu);
   });
-  // TODO: Add MutationObserver
+
+  const observer = new MutationObserver((mutationRecords) => {
+    // TODO: Would it be faster to just query the document since it's native?
+    for (var ii = 0; ii < mutationRecords.length; ii++) {
+      const mutationRecord = mutationRecords[ii];
+
+      for (var jj = 0; jj < mutationRecord.addedNodes.length; jj++) {
+        const node = mutationRecord.addedNodes[jj];
+
+        node.querySelectorAll?.("a").forEach((element) => {
+          addEventListener(element, "mousedown", onLinkMouseDown);
+          addEventListener(element, "contextmenu", onLinkContextMenu);
+        });
+      }
+    }
+  });
+  observer.observe(document.body, {
+    subtree: true,
+    childList: true,
+  });
 })();
