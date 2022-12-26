@@ -3,11 +3,8 @@
 const PLACEHOLDER = "<YOUR PAGE URL HERE>";
 
 // Source: ~/Repositories/right-click-opens-link-in-a-new-background-tab-public/.github/ISSUE_TEMPLATE/broken-link.md
-const ISSUE_TEMPLATE = `**What's the URL of the page with the broken link?**
-
-URL of the page: ${PLACEHOLDER}
-
-**Is it a public page?**
+const TITLE_TEMPLATE = `Broken link at ${PLACEHOLDER}`;
+const ISSUE_TEMPLATE = `**Is the affected page a public page?**
 
 If the page is not public I can't help you with your issue. I can't debug what I can't access, sorry.  
 To check the checkbox, put an \`x\` between the brackets below: \`[ ]\` -> \`[x]\`
@@ -25,5 +22,11 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
   if (!reportLink) {
     return;
   }
-  reportLink.href = reportLink.href + `&body=${encodeURIComponent(ISSUE_TEMPLATE.replace(PLACEHOLDER, url))}`;
+  if (url) {
+    reportLink.href =
+      reportLink.href +
+      `&title=${encodeURIComponent(
+        TITLE_TEMPLATE.replace(PLACEHOLDER, url)
+      )}&body=${encodeURIComponent(ISSUE_TEMPLATE.replace(PLACEHOLDER, url))}`;
+  }
 });
