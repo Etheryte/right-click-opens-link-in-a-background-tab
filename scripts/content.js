@@ -87,7 +87,7 @@
   });
 
   const observer = new MutationObserver(() => {
-    // Simply requery the whole document since it isn't straightforward to figure out which mutations apply to us
+    // Simply requery the whole document so we don't have to figure out which mutations apply to us
     document.querySelectorAll("a").forEach((element) => {
       addEventListener(element, "mousedown", onLinkMouseDown);
       addEventListener(element, "contextmenu", onLinkContextMenu);
