@@ -1,1 +1,1 @@
-# Right Click Opens Link in a New Background Tab: Private repository
+# Right Click Opens Link in a Background Tab: Private repository
