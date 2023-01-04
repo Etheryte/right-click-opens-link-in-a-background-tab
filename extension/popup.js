@@ -2,7 +2,7 @@
 
 const PLACEHOLDER = "<YOUR PAGE URL HERE>";
 
-// Source: ~/Repositories/right-click-opens-link-in-a-new-background-tab-public/.github/ISSUE_TEMPLATE/broken-link.md
+// Source: ~/Repositories/right-click-opens-link-in-a-background-tab-public/.github/ISSUE_TEMPLATE/broken-link.md
 const TITLE_TEMPLATE = `Broken link at ${PLACEHOLDER}`;
 const ISSUE_TEMPLATE = `**Is the affected page a public page?**
 
