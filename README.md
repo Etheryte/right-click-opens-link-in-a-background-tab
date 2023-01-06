@@ -1,4 +1,4 @@
-# Right Click Opens Link in a New Background Tab
+# Right Click Opens Link in a Background Tab
 
 A Google Chrome extension that makes right clicking on links open them in a new background tab.  
 
