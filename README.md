@@ -1,10 +1,10 @@
 # Right Click Opens Link in a Background Tab
 
-<kbd>Cmd</kbd> + <kbd>Click</kbd> / <kbd>Ctrl</kbd> + <kbd>Click</kbd> / middle mouse button click on a link, but for the right mouse button. This extension makes opening links in new tabs a breeze on modern trackpads, where gestures already allow you to do most navigation operations without ever needing your keyboard.
+This extension makes right clicking on links open the link in a new background tab. In short, the same behavior as middle mouse click or <kbd>Cmd</kbd> + <kbd>Click</kbd> click on a link, but for the right mouse button. This makes opening links in new tabs a breeze on modern trackpads, where gestures already allow you to do most navigation operations without ever needing your keyboard.  
 
 ## Installation
 
-[Install via the Chrome web store](https://chrome.google.com/webstore/detail/right-click-opens-link-in/njboaameemdigbgpphlidpdcdjmkhfjm/).  
+[Install via the Chrome web store](https://chromewebstore.google.com/detail/right-click-opens-link-in/njboaameemdigbgpphlidpdcdjmkhfjm).  
 
 Alternatively, if you have privacy concerns or similar about installing extensions, you can [install the extension from the source](https://superuser.com/q/247651/162197).  
 
