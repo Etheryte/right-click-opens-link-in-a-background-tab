@@ -1,6 +1,6 @@
 # Right Click Opens Link in a Background Tab
 
-This extension makes right clicking on links open the link in a new background tab. In short, the same behavior as middle mouse click or <kbd>Cmd</kbd> + <kbd>Click</kbd> click on a link, but for the right mouse button. This makes opening links in new tabs a breeze on modern trackpads, where gestures already allow you to do most navigation operations without ever needing your keyboard.  
+This extension makes right clicking on links open the link in a new background tab. In short, the same behavior as middle mouse click or <kbd>Cmd</kbd> + <kbd>Click</kbd> on a link, but for the right mouse button. This makes opening links in new tabs a breeze on modern trackpads, where gestures already allow you to do most navigation operations without ever needing your keyboard.  
 
 ## Installation
 
