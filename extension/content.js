@@ -6,7 +6,7 @@
   const targetButton = 2; // Right click
   const maxAllowedMoveDistance = 1; // px
 
-  const addEventListener = (element, event, listener) => {
+  const addEventListenerOnce = (element, event, listener) => {
     element.removeEventListener(event, listener);
     element.addEventListener(event, listener);
   };
@@ -76,21 +76,28 @@
 
     event.preventDefault();
     chrome.runtime.sendMessage({ href: originalEvent.href });
-    cleanup();
+
+    /**
+     * Bugfix: The order of "contextmenu" firing differs on macOS and Windows, on macOS it fires before the body mouseup event, on Windows it fires after.
+     * We delay cleanup so the original event is persisted on both cases.
+     */
+    setTimeout(() => {
+      cleanup();
+    }, 0);
     return false;
   };
 
   document.body.addEventListener("mouseup", onBodyMouseUp);
   document.querySelectorAll("a").forEach((element) => {
-    addEventListener(element, "mousedown", onLinkMouseDown);
-    addEventListener(element, "contextmenu", onLinkContextMenu);
+    addEventListenerOnce(element, "mousedown", onLinkMouseDown);
+    addEventListenerOnce(element, "contextmenu", onLinkContextMenu);
   });
 
   const observer = new MutationObserver(() => {
     // Simply requery the whole document so we don't have to figure out which mutations apply to us
     document.querySelectorAll("a").forEach((element) => {
-      addEventListener(element, "mousedown", onLinkMouseDown);
-      addEventListener(element, "contextmenu", onLinkContextMenu);
+      addEventListenerOnce(element, "mousedown", onLinkMouseDown);
+      addEventListenerOnce(element, "contextmenu", onLinkContextMenu);
     });
   });
   observer.observe(document.body, {
