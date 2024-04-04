@@ -23,6 +23,51 @@ const createTab = async (params) => {
   }
 };
 
+let id = 0;
+
+chrome.declarativeNetRequest.getDynamicRules().then(oldRules => {
+  const oldRuleIds = oldRules.map(rule => rule.id);
+  console.log('remove', oldRuleIds);
+  chrome.declarativeNetRequest.updateDynamicRules({
+    removeRuleIds: oldRuleIds,
+  });
+})
+
+chrome.webRequest.onBeforeRequest.addListener(
+  (details) => {
+    if (details.type !== "main_frame" || details.method !== "GET") {
+        return;
+    }
+    const url = details.url;
+    // console.log(details);
+    // chrome.declarativeNetRequest.updateDynamicRules({
+    //   addRules: [{
+    //     action: {
+    //       type: "redirect",
+    //       redirect: {
+    //         url: 'http://google.com/gen_204'
+    //       },
+    //     },
+    //     condition: {
+    //       regexFilter: `^${details.url.replaceAll(".", "\\.")}$`,
+    //       "resourceTypes": [
+    //         "main_frame"
+    //       ]
+    //     },
+    //     id: ++id,
+    //   }],
+    // });
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 5000);
+    });
+  },
+  { urls: ["<all_urls>"] },
+  []
+  // ["blocking"],
+);
+
 /**
  * When multiple tabs are created, ensure they're offset and placed after one another.
  * Whenever the user switches tabs, tracking is reset.

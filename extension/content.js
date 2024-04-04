@@ -88,6 +88,7 @@
   };
 
   document.body.addEventListener("mouseup", onBodyMouseUp);
+  // TODO: Instead of this, listen on body and check if target element has a link parent
   document.querySelectorAll("a").forEach((element) => {
     addEventListenerOnce(element, "mousedown", onLinkMouseDown);
     addEventListenerOnce(element, "contextmenu", onLinkContextMenu);
@@ -103,5 +104,12 @@
   observer.observe(document.body, {
     subtree: true,
     childList: true,
+  });
+
+  document.body.addEventListener("mousedown", (event) => {
+    if (hasModifiersOrIncorrectButton(event)) {
+      return;
+    }
+    console.log('down', event);
   });
 })();
