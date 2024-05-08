@@ -19,6 +19,10 @@
     event.metaKey ||
     event.button !== targetButton;
 
+  const getNearestLink = (event) => {
+    return event.target.tagName === 'a' ? event.target : event.target.closest('a');
+  }
+
   const isInvalid = (href) => {
     if (!href) {
       return true;
@@ -32,11 +36,15 @@
   };
 
   const onLinkMouseDown = (event) => {
-    if (hasModifiersOrIncorrectButton(event)) {
+    console.log(event);
+    const target = getNearestLink(event);
+    console.log(target);
+
+    if (!target || hasModifiersOrIncorrectButton(event)) {
       cleanup();
       return;
     }
-    const href = event.currentTarget.href;
+    const href = target.href;
     if (isInvalid(href)) {
       cleanup();
       return;
@@ -50,7 +58,11 @@
   };
 
   const onLinkContextMenu = (event) => {
-    if (hasModifiersOrIncorrectButton(event) || !originalEvent) {
+    console.log(event);
+    const target = getNearestLink(event);
+    console.log(target);
+
+    if (!target || hasModifiersOrIncorrectButton(event) || !originalEvent) {
       cleanup();
       return;
     }
@@ -88,20 +100,24 @@
   };
 
   document.body.addEventListener("mouseup", onBodyMouseUp);
-  document.querySelectorAll("a").forEach((element) => {
-    addEventListenerOnce(element, "mousedown", onLinkMouseDown);
-    addEventListenerOnce(element, "contextmenu", onLinkContextMenu);
-  });
+  document.body.addEventListener("mousedown", onLinkMouseDown);
+  document.body.addEventListener("contextmenu", onLinkContextMenu);
 
-  const observer = new MutationObserver(() => {
-    // Simply requery the whole document so we don't have to figure out which mutations apply to us
-    document.querySelectorAll("a").forEach((element) => {
-      addEventListenerOnce(element, "mousedown", onLinkMouseDown);
-      addEventListenerOnce(element, "contextmenu", onLinkContextMenu);
-    });
-  });
-  observer.observe(document.body, {
-    subtree: true,
-    childList: true,
-  });
+  // // TODO: Instead of this, listen on body and check if target element has a link parent
+  // document.querySelectorAll("a").forEach((element) => {
+  //   addEventListenerOnce(element, "mousedown", onLinkMouseDown);
+  //   addEventListenerOnce(element, "contextmenu", onLinkContextMenu);
+  // });
+
+  // const observer = new MutationObserver(() => {
+  //   // Simply requery the whole document so we don't have to figure out which mutations apply to us
+  //   document.querySelectorAll("a").forEach((element) => {
+  //     addEventListenerOnce(element, "mousedown", onLinkMouseDown);
+  //     addEventListenerOnce(element, "contextmenu", onLinkContextMenu);
+  //   });
+  // });
+  // observer.observe(document.body, {
+  //   subtree: true,
+  //   childList: true,
+  // });
 })();
