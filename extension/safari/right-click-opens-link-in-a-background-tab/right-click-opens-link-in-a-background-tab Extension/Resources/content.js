@@ -23,12 +23,12 @@
     return event.target.tagName === 'a' ? event.target : event.target.closest('a');
   }
 
-  const isInvalid = (href) => {
-    if (!href) {
+  const isInvalid = (urlToOpen) => {
+    if (!urlToOpen) {
       return true;
     }
     // If we're dealing with a Js-bound link or similar, do nothing
-    return href.startsWith("javascript:") || href === "#";
+    return urlToOpen.startsWith("javascript:") || urlToOpen === "#";
   };
 
   const cleanup = () => {
@@ -36,16 +36,14 @@
   };
 
   const onLinkMouseDown = (event) => {
-    console.log(event);
     const target = getNearestLink(event);
-    console.log(target);
 
     if (!target || hasModifiersOrIncorrectButton(event)) {
       cleanup();
       return;
     }
-    const href = target.href;
-    if (isInvalid(href)) {
+    const urlToOpen = target.href;
+    if (isInvalid(urlToOpen)) {
       cleanup();
       return;
     }
@@ -53,14 +51,12 @@
     originalEvent = {
       screenX: event.screenX,
       screenY: event.screenY,
-      href: href,
+      urlToOpen: urlToOpen,
     };
   };
 
   const onLinkContextMenu = (event) => {
-    console.log(event);
     const target = getNearestLink(event);
-    console.log(target);
 
     if (!target || hasModifiersOrIncorrectButton(event) || !originalEvent) {
       cleanup();
@@ -87,7 +83,7 @@
     }
 
     event.preventDefault();
-    chrome.runtime.sendMessage({ href: originalEvent.href });
+    browser.runtime.sendMessage({ urlToOpen: originalEvent.urlToOpen });
 
     /**
      * Bugfix: The order of "contextmenu" firing differs on macOS and Windows, on macOS it fires before the body mouseup event, on Windows it fires after.
