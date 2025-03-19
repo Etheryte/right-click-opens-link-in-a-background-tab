@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Right Click Opens Link in a Background Tab",
   "description": "Right clicking a link opens the link in a new background tab.",
-  "version": "1.2",
+  "version": "1.4",
   "background": {
     "service_worker": "background.js"
   },
@@ -22,5 +22,6 @@
     "48": "icons/48.png",
     "128": "icons/128.png",
     "512": "icons/512.png"
-  }
+  },
+  "default_locale": "en"
 }
