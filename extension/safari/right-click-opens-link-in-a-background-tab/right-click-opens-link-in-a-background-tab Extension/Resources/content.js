@@ -1,15 +1,25 @@
 "use strict";
 
+const DEBUG_PREFIX = 'RCOLIANBT:';
+const DATA_PROPERTY = 's123jkdvk';
+const log = console.info.bind(console, DEBUG_PREFIX);
+
 (() => {
+  let currentBrowser;
+  if ('browser' in globalThis) {
+    currentBrowser = globalThis['browser'];
+  } else if ('chrome' in globalThis) {
+    currentBrowser = globalThis['chrome'];
+  } else if ('safari' in globalThis) {
+    currentBrowser = globalThis['safari'];
+  } else {
+    throw new RangeError('No supported browser found');
+  }
+
   let originalEvent = undefined;
   // See https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
   const targetButton = 2; // Right click
   const maxAllowedMoveDistance = 1; // px
-
-  const addEventListenerOnce = (element, event, listener) => {
-    element.removeEventListener(event, listener);
-    element.addEventListener(event, listener);
-  };
 
   const hasModifiersOrIncorrectButton = (event) =>
     // If any modifiers are used, let the browser do whatever the native thing is
@@ -19,31 +29,71 @@
     event.metaKey ||
     event.button !== targetButton;
 
+  function processElements(elements, x, y, allLinks, processed = new Set()) {
+    elements.forEach(element => {
+      if (processed.has(element)) return;
+      processed.add(element);
+      
+      if (element.tagName.toLowerCase() === 'a' && !isInvalid(element.href)) {
+        allLinks.add(element);
+      }
+      
+      if (element.shadowRoot) {
+        const shadowElements = element.shadowRoot.elementsFromPoint(x, y);
+        processElements(shadowElements, x, y, allLinks, processed);
+      }
+    });
+  }
+  
+  // Some pages hide links in shadow roots etc, try and retrieve those if all else fails
+  function getAllLinksAtCoordinates(x, y) {
+    const allLinks = new Set();
+    const processed = new Set();
+    
+    const mainElements = document.elementsFromPoint(x, y);
+    processElements(mainElements, x, y, allLinks, processed);
+    
+    return allLinks;
+  }
+  
   const getNearestLink = (event) => {
-    return event.target.tagName === 'a' ? event.target : event.target.closest('a');
+    // If the event fired on the link itself
+    if (event.target.tagName === 'a' && !isInvalid(a.href)) {
+      return event.target;
+    }
+
+    // If there's a link close by in the tree
+    const closest = event.target.closest('a');
+    if (closest && !isInvalid(closest.href)) {
+      return closest;
+    }
+
+    // All else fails, try and find a link by coordinates
+    const atCoordinates = getAllLinksAtCoordinates(event.clientX, event.clientY);
+    if (atCoordinates.size === 1) {
+      return atCoordinates.values().next().value;
+    }
+    return undefined;
   }
 
-  const isInvalid = (urlToOpen) => {
-    if (!urlToOpen) {
+  const isInvalid = (href) => {
+    if (!href) {
       return true;
     }
     // If we're dealing with a Js-bound link or similar, do nothing
-    return urlToOpen.startsWith("javascript:") || urlToOpen === "#";
+    return href.startsWith("javascript:") || href === "#";
   };
 
   const cleanup = () => {
     originalEvent = undefined;
   };
 
-  const onLinkMouseDown = (event) => {
+  const onBodyMouseDown = (event) => {
+    log('onBodyMouseDown');
     const target = getNearestLink(event);
+    log(target);
 
     if (!target || hasModifiersOrIncorrectButton(event)) {
-      cleanup();
-      return;
-    }
-    const urlToOpen = target.href;
-    if (isInvalid(urlToOpen)) {
       cleanup();
       return;
     }
@@ -51,22 +101,28 @@
     originalEvent = {
       screenX: event.screenX,
       screenY: event.screenY,
-      urlToOpen: urlToOpen,
+      [DATA_PROPERTY]: target.href,
     };
+    log(originalEvent);
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
   };
 
-  const onLinkContextMenu = (event) => {
-    const target = getNearestLink(event);
-
-    if (!target || hasModifiersOrIncorrectButton(event) || !originalEvent) {
+  const onBodyContextMenu = (event) => {
+    log('onBodyContextMenu');
+    if (hasModifiersOrIncorrectButton(event) || !originalEvent) {
       cleanup();
       return;
     }
     event.preventDefault();
-    return false;
+    event.stopPropagation();
+    event.stopImmediatePropagation();
   };
 
   const onBodyMouseUp = (event) => {
+    log('onBodyMouseUp');
     if (hasModifiersOrIncorrectButton(event) || !originalEvent) {
       cleanup();
       return;
@@ -82,9 +138,7 @@
       return;
     }
 
-    event.preventDefault();
-    browser.runtime.sendMessage({ urlToOpen: originalEvent.urlToOpen });
-
+    currentBrowser.runtime.sendMessage({ [DATA_PROPERTY]: originalEvent[DATA_PROPERTY] });
     /**
      * Bugfix: The order of "contextmenu" firing differs on macOS and Windows, on macOS it fires before the body mouseup event, on Windows it fires after.
      * We delay cleanup so the original event is persisted on both cases.
@@ -92,28 +146,13 @@
     setTimeout(() => {
       cleanup();
     }, 0);
-    return false;
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
   };
 
+  document.body.addEventListener("mousedown", onBodyMouseDown);
+  document.body.addEventListener("contextmenu", onBodyContextMenu);
   document.body.addEventListener("mouseup", onBodyMouseUp);
-  document.body.addEventListener("mousedown", onLinkMouseDown);
-  document.body.addEventListener("contextmenu", onLinkContextMenu);
-
-  // // TODO: Instead of this, listen on body and check if target element has a link parent
-  // document.querySelectorAll("a").forEach((element) => {
-  //   addEventListenerOnce(element, "mousedown", onLinkMouseDown);
-  //   addEventListenerOnce(element, "contextmenu", onLinkContextMenu);
-  // });
-
-  // const observer = new MutationObserver(() => {
-  //   // Simply requery the whole document so we don't have to figure out which mutations apply to us
-  //   document.querySelectorAll("a").forEach((element) => {
-  //     addEventListenerOnce(element, "mousedown", onLinkMouseDown);
-  //     addEventListenerOnce(element, "contextmenu", onLinkContextMenu);
-  //   });
-  // });
-  // observer.observe(document.body, {
-  //   subtree: true,
-  //   childList: true,
-  // });
 })();
