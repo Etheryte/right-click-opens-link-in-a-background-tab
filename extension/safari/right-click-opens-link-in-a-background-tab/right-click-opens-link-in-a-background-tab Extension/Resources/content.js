@@ -1,8 +1,10 @@
 "use strict";
 
+const DEBUG = false;
 const DEBUG_PREFIX = 'RCOLIANBT:';
-const DATA_PROPERTY = 's123jkdvk';
-const log = console.info.bind(console, DEBUG_PREFIX);
+const DATA_PROPERTY = 'eum2f0';
+const log = DEBUG ? console.info.bind(console, DEBUG_PREFIX) : () => {};
+const err = console.error.bind(console, DEBUG_PREFIX);
 
 (() => {
   let currentBrowser;
@@ -33,7 +35,7 @@ const log = console.info.bind(console, DEBUG_PREFIX);
     elements.forEach(element => {
       if (processed.has(element)) return;
       processed.add(element);
-      
+
       if (element.tagName.toLowerCase() === 'a' && !isInvalid(element.href)) {
         allLinks.add(element);
       }
@@ -70,10 +72,7 @@ const log = console.info.bind(console, DEBUG_PREFIX);
 
     // All else fails, try and find a link by coordinates
     const atCoordinates = getAllLinksAtCoordinates(event.clientX, event.clientY);
-    if (atCoordinates.size === 1) {
-      return atCoordinates.values().next().value;
-    }
-    return undefined;
+    return atCoordinates.values().next().value;
   }
 
   const isInvalid = (href) => {

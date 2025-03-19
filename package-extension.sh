@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
 mkdir -p dist
-zip -r dist/extension.zip extension
+cd extension/safari/right-click-opens-link-in-a-background-tab/right-click-opens-link-in-a-background-tab\ Extension/
+zip -r ../../../../dist/extension.zip Resources
