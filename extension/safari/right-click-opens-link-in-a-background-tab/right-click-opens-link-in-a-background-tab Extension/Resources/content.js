@@ -88,9 +88,7 @@ const err = console.error.bind(console, DEBUG_PREFIX);
   };
 
   const onBodyMouseDown = (event) => {
-    log('onBodyMouseDown');
     const target = getNearestLink(event);
-    log(target);
 
     if (!target || hasModifiersOrIncorrectButton(event)) {
       cleanup();
@@ -102,7 +100,6 @@ const err = console.error.bind(console, DEBUG_PREFIX);
       screenY: event.screenY,
       [DATA_PROPERTY]: target.href,
     };
-    log(originalEvent);
 
     event.preventDefault();
     event.stopPropagation();
@@ -110,7 +107,6 @@ const err = console.error.bind(console, DEBUG_PREFIX);
   };
 
   const onBodyContextMenu = (event) => {
-    log('onBodyContextMenu');
     if (hasModifiersOrIncorrectButton(event) || !originalEvent) {
       cleanup();
       return;
@@ -121,7 +117,6 @@ const err = console.error.bind(console, DEBUG_PREFIX);
   };
 
   const onBodyMouseUp = (event) => {
-    log('onBodyMouseUp');
     if (hasModifiersOrIncorrectButton(event) || !originalEvent) {
       cleanup();
       return;
@@ -137,6 +132,7 @@ const err = console.error.bind(console, DEBUG_PREFIX);
       return;
     }
 
+    log('open', originalEvent[DATA_PROPERTY]);
     currentBrowser.runtime.sendMessage({ [DATA_PROPERTY]: originalEvent[DATA_PROPERTY] });
     /**
      * Bugfix: The order of "contextmenu" firing differs on macOS and Windows, on macOS it fires before the body mouseup event, on Windows it fires after.
@@ -151,7 +147,7 @@ const err = console.error.bind(console, DEBUG_PREFIX);
     event.stopImmediatePropagation();
   };
 
-  document.body.addEventListener("mousedown", onBodyMouseDown);
-  document.body.addEventListener("contextmenu", onBodyContextMenu);
-  document.body.addEventListener("mouseup", onBodyMouseUp);
+  document.documentElement.addEventListener("mousedown", onBodyMouseDown);
+  document.documentElement.addEventListener("contextmenu", onBodyContextMenu);
+  document.documentElement.addEventListener("mouseup", onBodyMouseUp);
 })();

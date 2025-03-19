@@ -60,13 +60,6 @@ const onMessage = async (request, sender) => {
   }
 
   const senderTabId = sender.tab?.id;
-  // If the site we're on does something else on right clicks, try and detect that
-  await timeout(0);
-  if (senderTabId !== activeTabId) {
-    err('Lost active tab');
-    return;
-  }
-
   const senderTabIndex = sender.tab?.index;
   const index =
     typeof senderTabIndex === "undefined"
