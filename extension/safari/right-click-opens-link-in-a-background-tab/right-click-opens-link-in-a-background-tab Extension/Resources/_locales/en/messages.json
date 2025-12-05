@@ -1,10 +1,10 @@
 {
     "extension_name": {
-        "message": "right-click-opens-link-in-a-background-tab Extension",
+        "message": "Right Click Opens Link in a Background Tab",
         "description": "The display name for the extension."
     },
     "extension_description": {
-        "message": "This is right-click-opens-link-in-a-background-tab Extension. You should tell us what your extension does here.",
+        "message": "Right clicking a link opens the link in a new background tab. This extension makes right clicking on links open the link in a new background tab. In short, the same behavior as middle mouse click or Cmd + Click on a link, but for the right mouse button. This makes opening links in new tabs a breeze on modern trackpads, where gestures already allow you to do most navigation operations without ever needing your keyboard.",
         "description": "Description of what the extension does."
     }
 }

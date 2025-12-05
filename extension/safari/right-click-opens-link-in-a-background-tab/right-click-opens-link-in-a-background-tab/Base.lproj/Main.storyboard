@@ -13,9 +13,9 @@
                 <application id="hnw-xV-0zn" sceneMemberID="viewController">
                     <menu key="mainMenu" title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
                         <items>
-                            <menuItem title="right-click-opens-link-in-a-background-tab" id="1Xt-HY-uBw">
+                            <menuItem title="Right Click Opens Link in a Background Tab" id="1Xt-HY-uBw">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="right-click-opens-link-in-a-background-tab" systemMenu="apple" id="uQy-DD-JDr">
+                                <menu key="submenu" title="Right Click Opens Link in a Background Tab" systemMenu="apple" id="uQy-DD-JDr">
                                     <items>
                                         <menuItem title="About right-click-opens-link-in-a-background-tab" id="5kV-Vb-QxS">
                                             <modifierMask key="keyEquivalentModifierMask"/>
@@ -78,7 +78,7 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController showSeguePresentationStyle="single" id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="right-click-opens-link-in-a-background-tab" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" animationBehavior="default" id="IQv-IB-iLA">
+                    <window key="window" title="Right Click Opens Link in a Background Tab" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" animationBehavior="default" titlebarAppearsTransparent="YES" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
                         <windowCollectionBehavior key="collectionBehavior" fullScreenNone="YES"/>
                         <rect key="contentRect" x="196" y="240" width="425" height="325"/>

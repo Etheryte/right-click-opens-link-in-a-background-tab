@@ -33,21 +33,18 @@ class ViewController: NSViewController, WKNavigationDelegate, WKScriptMessageHan
             }
 
             DispatchQueue.main.async {
-                if #available(macOS 13, *) {
-                    webView.evaluateJavaScript("show(\(state.isEnabled), true)")
-                } else {
-                    webView.evaluateJavaScript("show(\(state.isEnabled), false)")
-                }
+                webView.evaluateJavaScript("show(\(state.isEnabled))")
             }
         }
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if (message.body as! String != "open-preferences") {
-            return;
+        if (message.body as! String == "open-preferences") {
+            SFSafariApplication.showPreferencesForExtension(withIdentifier: extensionBundleIdentifier) { error in
+                // Do nothing
+            }
         }
-
-        SFSafariApplication.showPreferencesForExtension(withIdentifier: extensionBundleIdentifier) { error in
+        if (message.body as! String == "close-app") {
             DispatchQueue.main.async {
                 NSApplication.shared.terminate(nil)
             }
