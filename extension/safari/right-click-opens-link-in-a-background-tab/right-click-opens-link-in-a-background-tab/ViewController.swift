@@ -19,10 +19,9 @@ class ViewController: NSViewController, WKNavigationDelegate, WKScriptMessageHan
         super.viewDidLoad()
 
         self.webView.navigationDelegate = self
-
         self.webView.configuration.userContentController.add(self, name: "controller")
-
         self.webView.loadFileURL(Bundle.main.url(forResource: "Main", withExtension: "html")!, allowingReadAccessTo: Bundle.main.resourceURL!)
+        self.webView.setValue(false, forKey: "drawsBackground")
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {

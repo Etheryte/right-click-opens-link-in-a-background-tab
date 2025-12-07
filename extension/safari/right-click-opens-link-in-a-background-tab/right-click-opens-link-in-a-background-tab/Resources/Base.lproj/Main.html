@@ -8,14 +8,19 @@
     <script src="../Script.js" defer></script>
 </head>
 <body>
-    <img src="../512.png" width="96" height="96" alt="" />
-    <div>
-        <p class="state-unknown">The extension is currently off. You can turn it on in Safari Extensions Settings.</p>
-        <p class="state-on">The extension is now on, you can safely close this window.</p>
-        <p class="state-off">The extension is currently off. You can turn it on in Safari Extensions Settings.</p>
-        <p class="state-off">In order to function properly, the extension needs to be enabled on all sites.</p>
-        <button class="open-preferences">Open Safari Extensions Settings…</button>
-        <button class="close-app">Close</button>
+    <div class="row">
+        <img src="../512.png" width="82" height="82" alt="" />
+        <div>
+            <p><strong>Right Click Opens Link in a Background Tab</strong></p>
+            <p class="state-on">The extension has been enabled in Safari settings.</p>
+            <p class="state-on">You can safely close this window.</p>
+            <p class="state-off">Open Safari settings to enable the extension.</p>
+            <p class="state-off">The extension must to be enabled on all sites to work.</p>
+            <p class="state-unknown">Open Safari settings to enable the extension.</p>
+            <p class="state-unknown">The extension must to be enabled on all sites to work.</p>
+        </div>
     </div>
+    <button class="open-preferences state-off">Open Safari Extensions Settings…</button>
+    <button class="close-app state-on">Close Window…</button>
 </body>
 </html>

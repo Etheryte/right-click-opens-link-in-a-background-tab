@@ -53,7 +53,7 @@ const onActivated = async (state) => {
 };
 
 const onMessage = async (request, sender) => {
-  log('received link', request[DATA_PROPERTY]);
+  log('received event', request[DATA_PROPERTY]);
 
   if (!sender.tab?.url || !request[DATA_PROPERTY]) {
     return true;
